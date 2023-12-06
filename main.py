@@ -2,7 +2,6 @@
 # to do:
 # plek voor de lijst maken, maar allemaal onzichtbaar
 # guessed lijst vullen en correcte zichtbaar maken
-# zorgen dat geen cijfers en hoofdletters getypt kunnen worden
 # waarom knippert de display van een goede gok?
 # ----> doordat de blit / draw 2 of 3x per loop wordt gedaan --> veranderen: pass variabele van goede gok = true o.i.d. naar draw, zodat die bepaalt dat de tekst wordt weergegeven. dan kunnen de overige blit calls weg.
 # mr. mime wordt bij de punt al goedgekeurd??
@@ -11,7 +10,7 @@
 
 import pandas as pd
 import pygame
-
+import sys
 
 pygame.init()
 
@@ -23,9 +22,10 @@ FPS = 60
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-BLUE = (0, 0, 255)
+BLUE = (50, 50, 200)
 
 SCORE_FONT = pygame.font.SysFont("comicsans", 50)
+MENUBUTTON_FONT = pygame.font.SysFont("comicsans", 50)
 
 #this is where the text goes
 input_rect = pygame.Rect(250, 300, 200, 50)
@@ -35,6 +35,7 @@ input_rect1 = pygame.Rect(200, 300, 300, 3)
 input_rect2 = pygame.Rect(200, 300, 3, 80)
 input_rect3 = pygame.Rect(200, 380, 300, 3)
 input_rect4 = pygame.Rect(500, 300, 3, 80)
+startbtnrect = pygame.Rect(100, 100, 200, 80)
    
 
 #list1 = open("Alphabet.txt").read().split()
@@ -60,32 +61,46 @@ def starting_menu():
     startmenu = True
     clock = pygame.time.Clock()
 
+    startbtnx1 = 100
+    startbtnx2 = 200
+    startbtny1 = 100
+    startbtny2 = 200
+
+    startbtnrect
+
     while startmenu:
         for event in pygame.event.get():
-            print(event)
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-                
-        WIN.fill(BLUE)
-        pygame.display.update()
-        clock.tick(FPS)
-
-        for event in pygame.event.get():
+            #print(event)
             if event.type == pygame.QUIT:
                 startmenu = False
                 break
-            draw_menu(WIN)
-            # if the key is physically pressed down
+                
+        # if the key is physically pressed down
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
-                    # stores text except last letter
                     main()
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                m_x, m_y = pygame.mouse.get_pos()
+                if (startbtnx1 < m_x < startbtnx2) & (startbtny1 < m_y < startbtny2):
+                    main()
+                    
+        clock.tick(FPS)
+        draw_menu(WIN)
+        
+    pygame.quit()
+    sys.exit()        
 
-def draw_menu(WIN):
-    pass
 
+def draw_menu(win):
+    win.fill(BLUE)
+    
+    #start button
+    pygame.draw.rect(win, "Green", startbtnrect)
+    startbtntext = MENUBUTTON_FONT.render("START", 1, WHITE)
+    win.blit(startbtntext, (100, 100))
+    
+    pygame.display.update()
 
 def draw(win, score, user_text):
     win.fill(BLACK)
@@ -116,11 +131,11 @@ def checkguess(user_text):
         #if in lijst & nog niet eerder genoemd
         ## if in gen1-lijst & NIET in 'al-genoemd' lijst
 
-    if user_text in lclist1:
-        if user_text in guessed:
+    if user_text.lower() in lclist1:
+        if user_text.lower() in guessed:
             pass
         else:
-            guessed.append(user_text)
+            guessed.append(user_text.lower())
             return True
 
 def main():
@@ -136,8 +151,8 @@ def main():
  
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
-                break
+                pygame.quit()
+                sys.exit()
     
             # if the key is physically pressed down
             if event.type == pygame.KEYDOWN:
@@ -175,7 +190,7 @@ def main():
             pygame.time.delay(5000)
             
         
-    pygame.quit()
+    
     
 
 
@@ -185,4 +200,4 @@ if __name__ == "__main__":
     initialize()
     starting_menu()
     #main()
-
+    pygame.quit()
