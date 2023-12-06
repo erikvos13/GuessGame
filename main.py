@@ -2,8 +2,6 @@
 # to do:
 # plek voor de lijst maken, maar allemaal onzichtbaar
 # guessed lijst vullen en correcte zichtbaar maken
-# waarom knippert de display van een goede gok?
-# ----> doordat de blit / draw 2 of 3x per loop wordt gedaan --> veranderen: pass variabele van goede gok = true o.i.d. naar draw, zodat die bepaalt dat de tekst wordt weergegeven. dan kunnen de overige blit calls weg.
 # mr. mime wordt bij de punt al goedgekeurd??
 # speloptie laten kiezen: moet het op volgorde ja/nee
 # speloptie laten kiezen: welke lijst wil je spelen?
@@ -102,7 +100,7 @@ def draw_menu(win):
     
     pygame.display.update()
 
-def draw(win, score, user_text):
+def draw(win, score, user_text, compliment):
     win.fill(BLACK)
 
     score_text = SCORE_FONT.render(f"{score}", 1, WHITE)
@@ -120,6 +118,10 @@ def draw(win, score, user_text):
     pygame.draw.rect(win, "Green", input_rect2)
     pygame.draw.rect(win, "Green", input_rect3)
     pygame.draw.rect(win, "Green", input_rect4)
+    
+    if compliment == True:
+        goodguess = SCORE_FONT.render("You did it!", 1, WHITE)
+        WIN.blit(goodguess, (WIDTH//2 - goodguess.get_width()//2, HEIGHT//2 - goodguess.get_height()//3))
     
     pygame.display.update()
     
@@ -145,6 +147,7 @@ def main():
     user_text = ""
     input_rect = pygame.Rect(200, 200, 140, 32)
     message_end_time = 0
+    compliment = False
     
     while run:
         clock.tick(FPS)
@@ -162,21 +165,21 @@ def main():
                 else:
                     user_text += event.unicode
                 
-        draw(WIN, score, user_text)
+        draw(WIN, score, user_text, compliment)
         
         current_time = pygame.time.get_ticks()
         
         if checkguess(str(user_text)) == True:
             message_end_time = pygame.time.get_ticks() + 2000 # display for 2 seconds
-            goodguess = SCORE_FONT.render("You did it!", 1, WHITE)
-            
+                    
             score += 1   
             #pygame.time.wait(2000)
             user_text = ""
             
         if current_time < message_end_time:
-            WIN.blit(goodguess, (WIDTH//2 - goodguess.get_width()//2, HEIGHT//2 - goodguess.get_height()//3))
-            pygame.display.update()
+            compliment = True
+        else:
+            compliment = False
             
         won = False
                 
