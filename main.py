@@ -4,6 +4,7 @@
 # guessed lijst vullen en correcte zichtbaar maken
 # zorgen dat geen cijfers en hoofdletters getypt kunnen worden
 # waarom knippert de display van een goede gok?
+# ----> doordat de blit / draw 2 of 3x per loop wordt gedaan --> veranderen: pass variabele van goede gok = true o.i.d. naar draw, zodat die bepaalt dat de tekst wordt weergegeven. dan kunnen de overige blit calls weg.
 # mr. mime wordt bij de punt al goedgekeurd??
 # speloptie laten kiezen: moet het op volgorde ja/nee
 # speloptie laten kiezen: welke lijst wil je spelen?
@@ -20,9 +21,9 @@ pygame.display.set_caption("Guess all Gen 1 Pokemon!")
 
 FPS = 60
 
-WHITE = (255,255,255)
-BLACK = (0,0,0)
-
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+BLUE = (0, 0, 255)
 
 SCORE_FONT = pygame.font.SysFont("comicsans", 50)
 
@@ -53,6 +54,38 @@ def initialize():
 
     pass    
    
+
+def starting_menu():
+
+    startmenu = True
+    clock = pygame.time.Clock()
+
+    while startmenu:
+        for event in pygame.event.get():
+            print(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+                
+        WIN.fill(BLUE)
+        pygame.display.update()
+        clock.tick(FPS)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                startmenu = False
+                break
+            draw_menu(WIN)
+            # if the key is physically pressed down
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    # stores text except last letter
+                    main()
+
+
+def draw_menu(WIN):
+    pass
+
 
 def draw(win, score, user_text):
     win.fill(BLACK)
@@ -150,5 +183,6 @@ def main():
 
 if __name__ == "__main__":
     initialize()
-    main()
-    
+    starting_menu()
+    #main()
+
