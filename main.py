@@ -35,12 +35,13 @@ input_rect4 = pygame.Rect(500, 300, 3, 80)
 startbtnrect = pygame.Rect(100, 100, 200, 80)
 abcbtnrect = pygame.Rect(100, 200, 200, 80)   
 
-abclistraw = open("Alphabet.txt").read().split()
-abclist = [x.lower() for x in abclistraw]    #change to all lower case
+with open("Alphabet.txt") as f:
+    abclistraw = f.read().split()
+    abclist = [x.lower() for x in abclistraw]    #change to all lower case
 
-pkmnlistraw = open("Pokemon.txt").read().split()
-pkmnlist = [x.lower() for x in pkmnlistraw]    #change to all lower case
-
+with open("Pokemon.txt") as f:
+    pkmnlistraw = f.read().split()
+    pkmnlist = [x.lower() for x in pkmnlistraw]    #change to all lower case
 
 guessed = []        #deze lijst begint leeg maar wordt gevuld met goed geraden pokemon (of uberhaupt met alles wat wordt ingevoerd)
 
