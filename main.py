@@ -2,8 +2,9 @@
 # to do:
 # plek voor de lijst maken, maar allemaal onzichtbaar
 # guessed lijst vullen en correcte zichtbaar maken
-# mr. mime wordt gesplitst in "mr." en "mime" ! daardoor totaal 152... komt omdat split ook op de spatie afgaat?
+# nidoran mannetje en vrouwtje hebben/hadden symbolen in de lijst.. bij de gok 'nidoran' direct vrouwtje EN mannetje in lijst afvinken
 # speloptie laten kiezen: moet het op volgorde ja/nee
+
 
 
 import pygame
@@ -40,7 +41,7 @@ with open("Alphabet.txt") as f:
     abclist = [x.lower() for x in abclistraw]    #change to all lower case
 
 with open("Pokemon.txt") as f:
-    pkmnlistraw = f.read().split()
+    pkmnlistraw = f.read().split("\n")
     pkmnlist = [x.lower() for x in pkmnlistraw]    #change to all lower case
 
 guessed = []        #deze lijst begint leeg maar wordt gevuld met goed geraden pokemon (of uberhaupt met alles wat wordt ingevoerd)
